@@ -1,12 +1,13 @@
 package org.jms.consumer
 
-import org.springframework.stereotype.Service
-
 import scalaz.effect.IO
 import scalaz.effect.IO.putStr
 
-@Service
-class MsgProcessor {
+sealed trait MsgProcessor[M] {
+  def process(msg: M): IO[Unit]
+}
+
+class TextProcessor extends MsgProcessor[String] {
 
   def process(msg: String): IO[Unit] =
     putStr(msg)

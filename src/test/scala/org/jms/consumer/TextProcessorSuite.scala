@@ -1,7 +1,6 @@
 package org.jms.consumer
 
 import java.io.ByteArrayOutputStream
-import java.lang.annotation.Annotation
 
 import org.junit.runner.RunWith
 import org.scalacheck.Prop.forAll
@@ -9,15 +8,14 @@ import org.scalacheck.{Gen, Prop}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.Checkers
 import org.scalatest.{FunSuite, Matchers}
-import org.springframework.stereotype.Service
 
 import scalaz.effect.IO
 
 @RunWith(classOf[JUnitRunner])
-class MsgProcessorSuite extends FunSuite with Matchers with Checkers {
+class TextProcessorSuite extends FunSuite with Matchers with Checkers {
 
   trait TestFixture {
-    val msgProcessor = new MsgProcessor()
+    val msgProcessor: MsgProcessor[String] = new TextProcessor()
   }
 
   test("Process text message") {
@@ -37,12 +35,4 @@ class MsgProcessorSuite extends FunSuite with Matchers with Checkers {
     }
   }
 
-  test("Compliant class annotations") {
-    new TestFixture {
-      val annotations: Array[Annotation] = msgProcessor.getClass.getAnnotations
-      val service: Service = msgProcessor.getClass.getAnnotation(classOf[Service])
-
-      service should not be (null)
-    }
-  }
 }
