@@ -1,22 +1,17 @@
 package org.jms.consumer
 
-import java.util.Properties
-
 sealed trait ConnectionProperties {
-  def properties(): Properties
+  def properties(): Map[String, String]
 }
 
 class TextConnectionProperties(brokerURL: String, topicName: String) extends ConnectionProperties {
+
   import TextConnectionProperties._
 
-  def properties(): Properties = {
-    val props = new Properties()
-
-    props.put(BROKER_URL, brokerURL)
-    props.put(TOPIC_NAME, topicName)
-
-    props
-  }
+  def properties(): Map[String, String] =
+    Map(
+      BROKER_URL -> brokerURL,
+      TOPIC_NAME -> topicName)
 }
 
 object TextConnectionProperties {
