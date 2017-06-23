@@ -16,6 +16,7 @@ scalacOptions ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.springframework.boot" % "spring-boot-starter" % "1.5.4.RELEASE",
+  "javax.jms" % "javax.jms-api" % "2.0",
   "org.apache.activemq" % "activemq-broker" % "5.14.5",
   "org.scalaz" %% "scalaz-effect" % "7.2.13",
   "org.springframework.boot" % "spring-boot-starter-test" % "1.5.4.RELEASE" % "test",

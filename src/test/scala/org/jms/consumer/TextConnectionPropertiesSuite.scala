@@ -18,6 +18,7 @@ class TextConnectionPropertiesSuite extends FunSuite with Matchers {
       val props: Map[String, String] = connectionProperties.properties()
 
       props.size should be (2)
+
       props.get(TextConnectionProperties.BROKER_URL) should be (Some(brokerURL))
       props.get(TextConnectionProperties.TOPIC_NAME) should be (Some(topicName))
     }
