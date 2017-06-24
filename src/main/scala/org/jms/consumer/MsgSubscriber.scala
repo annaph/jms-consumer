@@ -11,10 +11,10 @@ trait MsgSubscriber[M <: Message, D] {
   def subscribe(): Disposable
 }
 
-class Subscriber(
-    observable: MsgObservable,
-    converter: MsgConverter[String],
-    processor: MsgProcessor[String])
+class TextSubscriber(
+                  flowable: MsgFlowable,
+                  converter: MsgConverter[String],
+                  processor: MsgProcessor[String])
   extends MsgSubscriber[TextMessage, String] {
 
   def subscribe(): Disposable = {
@@ -31,6 +31,6 @@ class Subscriber(
         e.printStackTrace()
       }
 
-    observable.messageObsevable().subscribe(onNext, onError)
+    flowable.messageFlowable().subscribe(onNext, onError)
   }
 }
