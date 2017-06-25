@@ -61,7 +61,7 @@ class TextSubscriberSuite extends FunSuite with MockitoSugar {
     }
   }
 
-  test("Subscribe to flowable - handle error") {
+  test("Subscribe to flowable - handle failure") {
     new TestFixture {
         val flowable: Flowable[Message] = Flowable.error(exception)
 
