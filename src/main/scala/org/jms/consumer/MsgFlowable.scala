@@ -1,12 +1,17 @@
 package org.jms.consumer
 
-import javax.jms.{Connection, Message, MessageConsumer, MessageListener}
+import javax.jms.Session.AUTO_ACKNOWLEDGE
+import javax.jms._
 
 import io.reactivex.{BackpressureStrategy, Flowable, FlowableOnSubscribe}
+import org.apache.activemq.ActiveMQConnectionFactory
+import org.jms.consumer.TextConnectionProperties.{BROKER_URL, TOPIC_NAME}
 
 import scala.util.{Failure, Success, Try}
 
 trait MsgFlowable {
+
+  def connect(): (Connection, MessageConsumer)
 
   def prepare(connection: Connection, messageConsumer: MessageConsumer)
 
@@ -17,10 +22,24 @@ trait MsgFlowable {
 
 class TextFlowable(
     private val connectionProperties: ConnectionProperties,
-    private val exceptionListener: ConnectionExceptionListener)
+    private val connectionExceptionListener: ConnectionExceptionListener)
   extends MsgFlowable { f =>
 
   private var _flowable: Flowable[Message] = _
+
+  override def connect(): (Connection, MessageConsumer) = {
+    val props: Map[String, String] = connectionProperties.properties()
+
+    val connectionFactory = new ActiveMQConnectionFactory(props(BROKER_URL))
+    val connection: Connection = connectionFactory.createConnection()
+    connection setExceptionListener connectionExceptionListener
+
+    val session: Session = connection createSession (false, AUTO_ACKNOWLEDGE)
+    val topic: Topic = session createTopic props(TOPIC_NAME)
+    val messageConsumer: MessageConsumer = session createConsumer topic
+
+    connection -> messageConsumer
+  }
 
   override def prepare(connection: Connection, messageConsumer: MessageConsumer): Unit = {
     val source: FlowableOnSubscribe[Message] = {
