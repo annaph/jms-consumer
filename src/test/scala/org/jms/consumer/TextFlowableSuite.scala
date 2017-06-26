@@ -26,9 +26,6 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
     val jmsMsg1 = new ActiveMQTextMessage()
     val jmsMsg2 = new ActiveMQTextMessage()
     val jmsMsg3 = new ActiveMQTextMessage()
-
-    val exceptionMsg = "some exception"
-    val exception = new Exception(exceptionMsg)
   }
 
   test("Prepare for emitting") {
@@ -65,17 +62,9 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
 
       msgFlowable prepare (mockConnection, mockMessageConsumer)
 
-      var actualException: Exception = _
-
       val subscriber = new TestSubscriber[Message]() {
         override def onNext(msg: Message): Unit = {
-          println("TU SAM ---------------------------------")
-          throw exception
-        }
-        
-        override def onError(t: Throwable): Unit = {
-          println("TU SAM 2 ---------------------------------")
-          actualException = t.asInstanceOf[Exception]
+          throw new Exception()
         }
       }
       val flowable: Flowable[Message] = msgFlowable.messageFlowable()
@@ -85,8 +74,7 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
 
       messageListener onMessage jmsMsg1
 
-      subscriber assertValueCount 0
-      actualException should be (exception)
+      subscriber.assertNoValues()
     }
   }
 }

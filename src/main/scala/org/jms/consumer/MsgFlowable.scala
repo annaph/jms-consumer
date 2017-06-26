@@ -31,10 +31,8 @@ class TextFlowable(
               subscriber onNext msg
             } match {
               case Success(_) =>
-                println("TU SAM 3 ---------------------------------")
                 ()
               case Failure(e) =>
-                println("TU SAM 4 ---------------------------------")
                 subscriber onError e
             }
         }
