@@ -7,7 +7,10 @@ import io.reactivex.functions.Consumer
 
 import scalaz.effect.IO
 
-trait MsgSubscriber[M <: Message, D] {
+trait MsgSubscriber {
+  type M <: Message
+  type D
+
   def subscribe(): Disposable
 }
 
@@ -15,7 +18,10 @@ class TextSubscriber(
                   flowable: MsgFlowable,
                   converter: MsgConverter[String],
                   processor: MsgProcessor[String])
-  extends MsgSubscriber[TextMessage, String] {
+  extends MsgSubscriber {
+
+  type M = TextMessage
+  type D = String
 
   def subscribe(): Disposable = {
     val onNext: Consumer[Message] =

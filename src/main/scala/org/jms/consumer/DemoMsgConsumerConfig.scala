@@ -1,7 +1,5 @@
 package org.jms.consumer
 
-import javax.jms.TextMessage
-
 import org.springframework.beans.factory.annotation.{Qualifier, Value}
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -51,8 +49,8 @@ class DemoMsgConsumerConfig {
   def textSubscriber(
                       @Qualifier("text-flowable") msgFlowable: MsgFlowable,
                       @Qualifier("text-converter") msgConverter: MsgConverter[String],
-                      @Qualifier("text-processor") msgProcessor: MsgProcessor[String]): MsgSubscriber[TextMessage, String] = {
-    val subscriber: MsgSubscriber[TextMessage, String] = new TextSubscriber(msgFlowable, msgConverter, msgProcessor)
+                      @Qualifier("text-processor") msgProcessor: MsgProcessor[String]): MsgSubscriber = {
+    val subscriber: MsgSubscriber = new TextSubscriber(msgFlowable, msgConverter, msgProcessor)
     subscriber.subscribe()
 
     subscriber

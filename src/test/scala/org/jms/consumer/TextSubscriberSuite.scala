@@ -21,7 +21,7 @@ class TextSubscriberSuite extends FunSuite with MockitoSugar {
     val mockMsgConverter = mock[MsgConverter[String]]
     val mockMsgProcessor = mock[MsgProcessor[String]]
 
-    val subscriber: MsgSubscriber[TextMessage, String] = new TextSubscriber(mockMsgFlowable, mockMsgConverter, mockMsgProcessor)
+    val subscriber: MsgSubscriber = new TextSubscriber(mockMsgFlowable, mockMsgConverter, mockMsgProcessor)
 
     val jmsMsg1 = new ActiveMQTextMessage()
     val text1 = "text1"
