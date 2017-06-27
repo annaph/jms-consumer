@@ -39,7 +39,7 @@ class DemoMsgConsumerConfig {
     val flowable = new TextFlowable(connectionProperties, connectionExceptionListener)
 
     val (connection, messageConsumer) = flowable.connect()
-    flowable prepare(connection, messageConsumer)
+    flowable prepare (connection, messageConsumer)
 
     flowable
   }
