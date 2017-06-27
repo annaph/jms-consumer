@@ -22,7 +22,7 @@ trait MsgFlowable {
 
 class TextFlowable(
     private val connectionProperties: ConnectionProperties,
-    private val connectionExceptionListener: ConnectionExceptionListener)
+    private val connectionExceptionListener: ExceptionListener)
   extends MsgFlowable { f =>
 
   private var _flowable: Flowable[Message] = _
