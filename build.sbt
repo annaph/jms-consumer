@@ -9,7 +9,7 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-Xfatal-warnings",
   "-Ywarn-unused-import",
-  //"-Ywarn-unused",
+  "-Ywarn-unused",
   "-Ywarn-dead-code",
   "-Ywarn-numeric-widen")
 

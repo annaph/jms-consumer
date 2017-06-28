@@ -73,7 +73,7 @@ class JMSIntegrationSuite extends JUnitSuite {
         _ <- 1 to N
       } messageProducer send jmsMsg1
 
-      await().timeout(120, SECONDS).until(() => subscriber.valueCount(), equalTo(N+4))
+      await().timeout(120, SECONDS).until(() => subscriber.valueCount(), equalTo(N))
       subscriber.assertNoErrors()
     }
   }
