@@ -2,28 +2,76 @@ package org.jms.consumer
 
 import javax.jms._
 
+/**
+  * Converts JMS message to Scala object.
+  *
+  * Following objects use this trait:
+  * [[TextConverter]]
+  *
+  * @tparam D type of Scala object to convert JMS message.
+  */
 sealed trait MsgConverter[D] {
+
+  /**
+    * Converts [[TextMessage]].
+    *
+    * @param msg JMS message to convert.
+    * @return converted message.
+    */
   def fromMessage(msg: TextMessage): D
+
+  /**
+    * Converts [[BytesMessage]].
+    *
+    * @param msg JMS message to convert.
+    * @return converted message.
+    */
   def fromMessage(msg: BytesMessage): D
+
+  /**
+    * Converts [[MapMessage]].
+    *
+    * @param msg JMS message to convert.
+    * @return converted message.
+    */
   def fromMessage(msg: MapMessage): D
+
+  /**
+    * Converts [[ObjectMessage]].
+    *
+    * @param msg JMS message to convert.
+    * @return converted message.
+    */
   def fromMessage(msg: ObjectMessage): D
+
+  /**
+    * Converts [[StreamMessage]].
+    *
+    * @param msg JMS message to convert.
+    * @return converted message.
+    */
   def fromMessage(msg: StreamMessage): D
 }
 
+/**
+  * Converts JMS message to [[String]] object.
+  *
+  * @constructor Creates new Text converter.
+  */
 class TextConverter extends MsgConverter[String] {
 
-  def fromMessage(msg: TextMessage): String =
+  override def fromMessage(msg: TextMessage): String =
     msg.getText()
 
-  def fromMessage(msg: BytesMessage): String =
+  override def fromMessage(msg: BytesMessage): String =
     throw new UnsupportedOperationException("Not supported")
 
-  def fromMessage(msg: MapMessage): String =
+  override def fromMessage(msg: MapMessage): String =
     throw new UnsupportedOperationException("Not supported")
 
-  def fromMessage(msg: ObjectMessage): String =
+  override def fromMessage(msg: ObjectMessage): String =
     throw new UnsupportedOperationException("Not supported")
 
-  def fromMessage(msg: StreamMessage): String =
+  override def fromMessage(msg: StreamMessage): String =
     throw new UnsupportedOperationException("Not supported")
 }

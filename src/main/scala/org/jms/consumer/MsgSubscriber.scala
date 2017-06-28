@@ -7,10 +7,21 @@ import io.reactivex.functions.Consumer
 
 import scalaz.effect.IO
 
+/**
+  * Subscribes to a [[MsgFlowable]] and handles the items it emits and any error notification it issues.
+  *
+  */
 trait MsgSubscriber {
+  /** Type of JMS message */
   type M <: Message
+
+  /** Type of Scala object used to represent JMS message */
   type D
 
+  /**
+    * 
+    * @return
+    */
   def subscribe(): Disposable
 }
 
