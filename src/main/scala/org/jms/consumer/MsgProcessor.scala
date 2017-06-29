@@ -6,6 +6,9 @@ import scalaz.effect.IO.putStr
 /**
   * Process JMS message that is represented as Scala object.
   *
+  * Following objects use this trait:
+  * [[TextProcessor]]
+  *
   * @tparam M type of Scala object used to represent JMS message
   */
 sealed trait MsgProcessor[M] {

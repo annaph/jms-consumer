@@ -8,6 +8,9 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.Checkers
 import org.scalatest.{FunSuite, Matchers}
 
+/**
+  * Test suite for [[TextConverter]] instances.
+  */
 @RunWith(classOf[JUnitRunner])
 class TextConverterSuite extends FunSuite with Matchers with Checkers {
 

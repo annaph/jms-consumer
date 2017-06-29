@@ -11,6 +11,9 @@ import org.scalatest.{FunSuite, Matchers}
 
 import scalaz.effect.IO
 
+/**
+  * Test suite for [[TextProcessor]] instances.
+  */
 @RunWith(classOf[JUnitRunner])
 class TextProcessorSuite extends FunSuite with Matchers with Checkers {
 

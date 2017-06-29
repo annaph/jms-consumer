@@ -13,6 +13,9 @@ import org.scalatest.mockito.MockitoSugar
 
 import scalaz.effect.IO.ioUnit
 
+/**
+  * Test suite for [[TextSubscriber]] instances.
+  */
 @RunWith(classOf[JUnitRunner])
 class TextSubscriberSuite extends FunSuite with MockitoSugar {
 
@@ -63,16 +66,16 @@ class TextSubscriberSuite extends FunSuite with MockitoSugar {
 
   test("Subscribe to flowable - handle failure") {
     new TestFixture {
-        val flowable: Flowable[Message] = Flowable.error(exception)
+      val flowable: Flowable[Message] = Flowable.error(exception)
 
-        when(mockMsgFlowable.messageFlowable())
-          .thenReturn(flowable)
+      when(mockMsgFlowable.messageFlowable())
+        .thenReturn(flowable)
 
-        subscriber.subscribe()
+      subscriber.subscribe()
 
-        verify(mockMsgFlowable).messageFlowable()
-        verify(mockMsgConverter, never()).fromMessage(any[TextMessage])
-        verify(mockMsgProcessor, never()).process(any[String])
-      }
+      verify(mockMsgFlowable).messageFlowable()
+      verify(mockMsgConverter, never()).fromMessage(any[TextMessage])
+      verify(mockMsgProcessor, never()).process(any[String])
+    }
   }
 }

@@ -20,8 +20,11 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_T
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.{ActiveProfiles, ContextConfiguration, TestPropertySource}
 
+/**
+  * Test suite to test consuming JMS message coming from embedded Apache ActiveMQ JMS instance.
+  */
 @RunWith(classOf[SpringJUnit4ClassRunner])
-@ContextConfiguration(classes =  Array(classOf[JMSIntegrationConfig]))
+@ContextConfiguration(classes = Array(classOf[JMSIntegrationConfig]))
 @TestPropertySource(Array("/application.properties"))
 @ActiveProfiles(Array("test-jms"))
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)

@@ -10,6 +10,9 @@ import scalaz.effect.IO
 /**
   * Subscribes to a [[MsgFlowable]] and handles the items it emits and any error notification it issues.
   *
+  * Following objects use this trait:
+  * [[TextSubscriber]]
+  *
   */
 trait MsgSubscriber {
   /** Type of JMS message */
@@ -19,22 +22,32 @@ trait MsgSubscriber {
   type D
 
   /**
-    * 
-    * @return
+    * Subscribes to [[MsgFlowable]].
+    *
+    * @return a disposable resource.
     */
   def subscribe(): Disposable
 }
 
+/**
+  * Handles JMS messages. Subscribes to a [[MsgFlowable]] to receive JMS messages.
+  * JMS messages are converted to [[String]] objects before further processing.
+  *
+  * @constructor Creates new Text subscriber.
+  * @param flowable  message flowable.
+  * @param converter message converter
+  * @param processor message processor.
+  */
 class TextSubscriber(
-                  flowable: MsgFlowable,
-                  converter: MsgConverter[String],
-                  processor: MsgProcessor[String])
+                      flowable: MsgFlowable,
+                      converter: MsgConverter[String],
+                      processor: MsgProcessor[String])
   extends MsgSubscriber {
 
   type M = TextMessage
   type D = String
 
-  def subscribe(): Disposable = {
+  override def subscribe(): Disposable = {
     val onNext: Consumer[Message] =
       msg => {
         val text = converter fromMessage msg.asInstanceOf[TextMessage]

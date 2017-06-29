@@ -10,40 +10,71 @@ import org.jms.consumer._
 import org.springframework.beans.factory.annotation.{Qualifier, Value}
 import org.springframework.context.annotation.{Bean, Configuration, Profile}
 
+/**
+  * Spring configuration class used only when 'test-jms' profile is active.
+  *
+  * @constructor Creates new Spring configuration object.
+  */
 @Configuration
 @Profile(Array("test-jms"))
 class JMSIntegrationConfig {
 
+  /**
+    * Creates new [[ConnectionProperties]] object.
+    *
+    * @param brokerURL Apache Active MQ broker URL.
+    * @param topicName name of the topic to subscribe to.
+    * @return Text connection properties.
+    */
   @Bean(Array("test-connection-properties"))
   @Qualifier("test-connection-properties")
   def connectionProperties(
-      @Value("${jms.activemq.host}") brokerURL: String,
-      @Value("${jms.activemq.topic}") topicName: String): ConnectionProperties =
-    new TextConnectionProperties(brokerURL, topicName)
+                            @Value("${jms.activemq.host}") brokerURL: String,
+                            @Value("${jms.activemq.topic}") topicName: String): ConnectionProperties =
+  new TextConnectionProperties(brokerURL, topicName)
 
+  /**
+    * Creates new [[ConnectionExceptionListener]] object.
+    *
+    * @return connection exception listener.
+    */
   @Bean(Array("test-connection-exception-listener"))
   @Qualifier("test-connection-exception-listener")
   def exceptionListener(): ExceptionListener =
-    new ConnectionExceptionListener()
+  new ConnectionExceptionListener()
 
+  /**
+    * Creates new [[ConnectionProperties]] object.
+    *
+    * @param connectionProperties connection properties.
+    * @param exceptionListener    connection exception listener.
+    * @return Text flowable.
+    */
   @Bean(Array("test-message-flowable"))
   @Qualifier("test-message-flowable")
   def messageFlowable(
-      @Qualifier("test-connection-properties") connectionProperties: ConnectionProperties,
-      @Qualifier("test-connection-exception-listener") exceptionListener: ExceptionListener): MsgFlowable = {
+                       @Qualifier("test-connection-properties") connectionProperties: ConnectionProperties,
+                       @Qualifier("test-connection-exception-listener") exceptionListener: ExceptionListener): MsgFlowable = {
     val flowable: MsgFlowable = new TextFlowable(connectionProperties, exceptionListener)
 
     val (connection, messageConsumer) = flowable.connect()
-    flowable prepare (connection, messageConsumer)
+    flowable prepare(connection, messageConsumer)
 
     flowable
   }
 
+  /**
+    * Creates new [[MessageProducer]] object.
+    *
+    * @param connectionProperties connection properties.
+    * @param exceptionListener    connection exception listener.
+    * @return message producer.
+    */
   @Bean(Array("test-message-producer"))
   @Qualifier("test-message-producer")
   def messageProducer(
-      @Qualifier("test-connection-properties") connectionProperties: ConnectionProperties,
-      @Qualifier("test-connection-exception-listener") exceptionListener: ExceptionListener): MessageProducer = {
+                       @Qualifier("test-connection-properties") connectionProperties: ConnectionProperties,
+                       @Qualifier("test-connection-exception-listener") exceptionListener: ExceptionListener): MessageProducer = {
     val props: Map[String, String] = connectionProperties.properties()
 
     val connectionFactory = new ActiveMQConnectionFactory(props(BROKER_URL))
@@ -51,7 +82,7 @@ class JMSIntegrationConfig {
     val connection: Connection = connectionFactory.createConnection()
     connection setExceptionListener exceptionListener
 
-    val session: Session = connection createSession (false, AUTO_ACKNOWLEDGE)
+    val session: Session = connection createSession(false, AUTO_ACKNOWLEDGE)
     val topic: Topic = session createTopic props(TOPIC_NAME)
 
     val messageProducer: MessageProducer = session createProducer topic

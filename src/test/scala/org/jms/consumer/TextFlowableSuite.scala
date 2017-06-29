@@ -14,6 +14,9 @@ import org.scalatest.{FunSuite, Matchers}
 
 import scala.collection.JavaConverters._
 
+/**
+  * Test suite for [[TextFlowable]] instances.
+  */
 @RunWith(classOf[JUnitRunner])
 class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
 
@@ -35,7 +38,7 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
       doNothing().when(mockMessageConsumer)
         .setMessageListener(any(classOf[MessageListener]))
 
-      msgFlowable prepare (mockConnection, mockMessageConsumer)
+      msgFlowable prepare(mockConnection, mockMessageConsumer)
 
       val subscriber = new TestSubscriber[Message]()
       val flowable: Flowable[Message] = msgFlowable.messageFlowable()
@@ -49,7 +52,7 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
 
       subscriber assertValueCount 3
       subscriber assertNoErrors()
-      subscriber.values().asScala should be (List(jmsMsg1, jmsMsg2, jmsMsg3))
+      subscriber.values().asScala should be(List(jmsMsg1, jmsMsg2, jmsMsg3))
     }
   }
 
@@ -60,7 +63,7 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
       doNothing().when(mockMessageConsumer)
         .setMessageListener(any(classOf[MessageListener]))
 
-      msgFlowable prepare (mockConnection, mockMessageConsumer)
+      msgFlowable prepare(mockConnection, mockMessageConsumer)
 
       val subscriber = new TestSubscriber[Message]() {
         override def onNext(msg: Message): Unit = {
