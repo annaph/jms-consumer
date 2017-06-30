@@ -1,3 +1,12 @@
+
+/*                     __                                               *\
+**     ________ ___   / /  ___     jms-consumer                         **
+**    / __/ __// _ | / /  / _ |    (c) 2017                             **
+**  __\ \/ /__/ __ |/ /__/ __ |                                         **
+** /____/\___/_/ |_/____/_/ | |                                         **
+**                          |/                                          **
+\*                                                                      */
+
 package org.jms.consumer
 
 import javax.jms.{ExceptionListener, JMSException}
@@ -10,6 +19,6 @@ import javax.jms.{ExceptionListener, JMSException}
   */
 class ConnectionExceptionListener extends ExceptionListener {
 
-  override def onException(cause: JMSException) =
+  override def onException(cause: JMSException): Unit =
     throw new RuntimeException(cause)
 }

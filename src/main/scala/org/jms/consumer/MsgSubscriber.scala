@@ -1,3 +1,11 @@
+/*                     __                                               *\
+**     ________ ___   / /  ___     jms-consumer                         **
+**    / __/ __// _ | / /  / _ |    Copyright (C) 2017                   **
+**  __\ \/ /__/ __ |/ /__/ __ |                                         **
+** /____/\___/_/ |_/____/_/ | |                                         **
+**                          |/                                          **
+\*                                                                      */
+
 package org.jms.consumer
 
 import javax.jms.{Message, TextMessage}

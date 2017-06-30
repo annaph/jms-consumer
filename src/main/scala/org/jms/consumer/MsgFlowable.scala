@@ -1,3 +1,12 @@
+
+/*                     __                                               *\
+**     ________ ___   / /  ___     jms-consumer                         **
+**    / __/ __// _ | / /  / _ |    (c) 2017                             **
+**  __\ \/ /__/ __ |/ /__/ __ |                                         **
+** /____/\___/_/ |_/____/_/ | |                                         **
+**                          |/                                          **
+\*                                                                      */
+
 package org.jms.consumer
 
 import javax.jms.Session.AUTO_ACKNOWLEDGE

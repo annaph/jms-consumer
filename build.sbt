@@ -26,3 +26,5 @@ libraryDependencies ++= Seq(
   "org.mockito" % "mockito-all" % "1.9.5" % "test",
   "org.apache.activemq.tooling" % "activemq-junit" % "5.14.5" % "test",
   "org.awaitility" % "awaitility" % "3.0.0" % "test")
+
+scalastyleFailOnError := true
