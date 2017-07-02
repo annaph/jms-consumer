@@ -27,4 +27,5 @@ libraryDependencies ++= Seq(
   "org.apache.activemq.tooling" % "activemq-junit" % "5.14.5" % "test",
   "org.awaitility" % "awaitility" % "3.0.0" % "test")
 
+scalastyleConfig := file("jms_consumer-style-config.xml")
 scalastyleFailOnError := true

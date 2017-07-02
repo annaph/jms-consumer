@@ -31,7 +31,7 @@ class TextProcessorSuite extends FunSuite with Matchers with Checkers {
           action.unsafePerformIO()
         }
 
-        output.toString == msg
+        output.toString == (msg + "\n")
       }
 
       check(propProcessMsg)

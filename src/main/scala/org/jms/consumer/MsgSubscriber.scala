@@ -62,7 +62,6 @@ class TextSubscriber(
         val action: IO[Unit] = processor process text
 
         action.unsafePerformIO()
-        println
       }
 
     val onError: Consumer[Throwable] =

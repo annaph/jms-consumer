@@ -1,4 +1,3 @@
-
 /*                     __                                               *\
 **     ________ ___   / /  ___     jms-consumer                         **
 **    / __/ __// _ | / /  / _ |    (c) 2017                             **
@@ -10,7 +9,7 @@
 package org.jms.consumer
 
 import scalaz.effect.IO
-import scalaz.effect.IO.putStr
+import scalaz.effect.IO.putStrLn
 
 /**
   * Process JMS message that is represented as Scala object.
@@ -39,5 +38,5 @@ sealed trait MsgProcessor[M] {
 class TextProcessor extends MsgProcessor[String] {
 
   override def process(msg: String): IO[Unit] =
-    putStr(msg)
+    putStrLn(msg)
 }
