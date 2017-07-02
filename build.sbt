@@ -29,3 +29,5 @@ libraryDependencies ++= Seq(
 
 scalastyleConfig := file("jms_consumer-style-config.xml")
 scalastyleFailOnError := true
+
+jacoco.settings
