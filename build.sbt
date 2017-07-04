@@ -1,3 +1,5 @@
+enablePlugins(JavaAppPackaging)
+
 name := "jms-consumer"
 organization := "org.jms.consumer"
 version := "1.0.0"
@@ -31,4 +33,15 @@ scalastyleConfig := file("jms_consumer-style-config.xml")
 scalastyleFailOnError := true
 
 jacoco.settings
-jacoco.excludes in jacoco.Config := Seq("*DemoMsgConsumerConfig.java")
+
+jacoco.excludes in jacoco.Config := Seq(
+  "*DemoMsgConsumerConfig*",
+  "*DemoMsgConsumerApplication*")
+
+jacoco.thresholds in jacoco.Config := de.johoop.jacoco4sbt.Thresholds(
+  instruction = 95.00,
+  method = 95.00,
+  branch = 0.00,
+  complexity = 95.00,
+  line = 95.0,
+  clazz = 95.0)
