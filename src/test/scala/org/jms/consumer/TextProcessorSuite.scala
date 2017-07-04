@@ -9,6 +9,7 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.Checkers
 import org.scalatest.{FunSuite, Matchers}
 
+import scala.util.Properties.lineSeparator
 import scalaz.effect.IO
 
 /**
@@ -31,7 +32,7 @@ class TextProcessorSuite extends FunSuite with Matchers with Checkers {
           action.unsafePerformIO()
         }
 
-        output.toString == (msg + "\n")
+        output.toString == (msg + lineSeparator)
       }
 
       check(propProcessMsg)

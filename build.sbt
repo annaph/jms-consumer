@@ -31,3 +31,4 @@ scalastyleConfig := file("jms_consumer-style-config.xml")
 scalastyleFailOnError := true
 
 jacoco.settings
+jacoco.excludes in jacoco.Config := Seq("*DemoMsgConsumerConfig.java")
