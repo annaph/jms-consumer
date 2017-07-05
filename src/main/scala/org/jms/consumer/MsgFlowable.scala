@@ -29,9 +29,9 @@ trait MsgFlowable {
   /**
     * Establish connection with external JMS system. Returns JMS connection and consumer of JMS messages.
     *
-    * @return pair of connection and message consumer.
+    * @return pair of connection and message consumer if connection is successful.
     */
-  def connect(): (Connection, MessageConsumer)
+  def connect(): Try[(Connection, MessageConsumer)]
 
   /**
     * Prepares for receiving JMS messages and emitting them to any subscribed component.
@@ -67,18 +67,33 @@ class TextFlowable(
 
   private var _flowable: Flowable[Message] = _
 
-  override def connect(): (Connection, MessageConsumer) = {
+  override def connect(): Try[(Connection, MessageConsumer)] = {
     val props: Map[String, String] = connectionProperties.properties()
+    val optProps: Option[(String, String)] =
+      for {
+        brokerURL <- props get BROKER_URL
+        topicName <- props get TOPIC_NAME
+      } yield (brokerURL, topicName)
 
-    val connectionFactory = new ActiveMQConnectionFactory(props(BROKER_URL))
-    val connection: Connection = connectionFactory.createConnection()
-    connection setExceptionListener connectionExceptionListener
+    optProps match {
+      case None =>
+        Failure(new Exception("Missing connection properties"))
+      case Some((brokerURL, topicName)) =>
+        try {
+          val connectionFactory = new ActiveMQConnectionFactory(brokerURL)
+          val connection: Connection = connectionFactory.createConnection()
+          connection setExceptionListener connectionExceptionListener
 
-    val session: Session = connection createSession(false, AUTO_ACKNOWLEDGE)
-    val topic: Topic = session createTopic props(TOPIC_NAME)
-    val messageConsumer: MessageConsumer = session createConsumer topic
+          val session: Session = connection createSession(false, AUTO_ACKNOWLEDGE)
+          val topic: Topic = session createTopic topicName
+          val messageConsumer: MessageConsumer = session createConsumer topic
 
-    connection -> messageConsumer
+          Success(connection, messageConsumer)
+        } catch {
+          case e: Throwable =>
+            Failure(e)
+        }
+    }
   }
 
   override def prepare(connection: Connection, messageConsumer: MessageConsumer): Unit = {

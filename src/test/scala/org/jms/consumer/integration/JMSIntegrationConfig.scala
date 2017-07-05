@@ -10,6 +10,8 @@ import org.jms.consumer._
 import org.springframework.beans.factory.annotation.{Qualifier, Value}
 import org.springframework.context.annotation.{Bean, Configuration, Profile}
 
+import scala.util.{Failure, Success}
+
 /**
   * Spring configuration class used only when 'test-jms' profile is active.
   *
@@ -57,10 +59,13 @@ class JMSIntegrationConfig {
                        @Qualifier("test-connection-exception-listener") exceptionListener: ExceptionListener): MsgFlowable = {
     val flowable: MsgFlowable = new TextFlowable(connectionProperties, exceptionListener)
 
-    val (connection, messageConsumer) = flowable.connect()
-    flowable prepare(connection, messageConsumer)
-
-    flowable
+    flowable.connect() match {
+      case Success((connection, messageConsumer)) =>
+        flowable prepare(connection, messageConsumer)
+        flowable
+      case Failure(e) =>
+        throw e
+    }
   }
 
   /**

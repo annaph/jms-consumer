@@ -13,6 +13,8 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.{Bean, Configuration, Profile}
 
+import scala.util.{Failure, Success}
+
 /**
   * Spring configuration class used to create beans at runtime.
   * This configuration can be used only when 'prod' profile is active.
@@ -81,10 +83,13 @@ class DemoMsgConsumerConfig {
                     @Qualifier("text-connection-exception-listener") connectionExceptionListener: ConnectionExceptionListener): MsgFlowable = {
     val flowable = new TextFlowable(connectionProperties, connectionExceptionListener)
 
-    val (connection, messageConsumer) = flowable.connect()
-    flowable prepare(connection, messageConsumer)
-
-    flowable
+    flowable.connect() match {
+      case Success((connection, messageConsumer)) =>
+        flowable prepare(connection, messageConsumer)
+        flowable
+      case Failure(e) =>
+        throw e
+    }
   }
 
   /**

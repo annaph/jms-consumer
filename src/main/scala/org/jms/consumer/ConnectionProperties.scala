@@ -36,10 +36,20 @@ class TextConnectionProperties(brokerURL: String, topicName: String) extends Con
 
   import TextConnectionProperties._
 
-  override def properties(): Map[String, String] =
-    Map(
-      BROKER_URL -> brokerURL,
-      TOPIC_NAME -> topicName)
+  override def properties(): Map[String, String] = {
+    import scala.collection.mutable.Map
+
+    val props: Map[String, String] = Map()
+
+    if (!brokerURL.isEmpty) {
+      props put(BROKER_URL, brokerURL)
+    }
+    if (!topicName.isEmpty) {
+      props put(TOPIC_NAME, topicName)
+    }
+
+    props.toMap
+  }
 }
 
 /** Factory for [[TextConnectionProperties]] instances. */

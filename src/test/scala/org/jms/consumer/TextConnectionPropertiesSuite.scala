@@ -26,4 +26,24 @@ class TextConnectionPropertiesSuite extends FunSuite with Matchers {
       props.get(TextConnectionProperties.TOPIC_NAME) should be(Some(topicName))
     }
   }
+
+  test("Create connection properties with empty broker URL") {
+    new TestFixture {
+      val connectionProperties: ConnectionProperties = new TextConnectionProperties("", topicName)
+      val props: Map[String, String] = connectionProperties.properties()
+
+      props.size should be(1)
+      props.get(TextConnectionProperties.TOPIC_NAME) should be(Some(topicName))
+    }
+  }
+
+  test("Create connection properties with empty topic name") {
+    new TestFixture {
+      val connectionProperties: ConnectionProperties = new TextConnectionProperties(brokerURL, "")
+      val props: Map[String, String] = connectionProperties.properties()
+
+      props.size should be(1)
+      props.get(TextConnectionProperties.BROKER_URL) should be(Some(brokerURL))
+    }
+  }
 }
