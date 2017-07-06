@@ -39,9 +39,9 @@ jacoco.excludes in jacoco.Config := Seq(
   "*DemoMsgConsumerApplication*")
 
 jacoco.thresholds in jacoco.Config := de.johoop.jacoco4sbt.Thresholds(
-  instruction = 95.00,
+  instruction = 51.00,
   method = 95.00,
-  branch = 95.00,
-  complexity = 95.00,
+  branch = 51.00,
+  complexity = 51.00,
   line = 95.0,
   clazz = 95.0)

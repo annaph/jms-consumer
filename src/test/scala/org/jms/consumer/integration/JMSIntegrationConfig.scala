@@ -46,7 +46,7 @@ class JMSIntegrationConfig {
   new ConnectionExceptionListener()
 
   /**
-    * Creates new [[ConnectionProperties]] object.
+    * Creates new [[MsgFlowable]] object.
     *
     * @param connectionProperties connection properties.
     * @param exceptionListener    connection exception listener.

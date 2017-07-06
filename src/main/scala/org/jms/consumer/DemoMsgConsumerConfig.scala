@@ -70,7 +70,7 @@ class DemoMsgConsumerConfig {
   new TextProcessor()
 
   /**
-    * Creates new [[ConnectionProperties]] object.
+    * Creates new [[MsgFlowable]] object.
     *
     * @param connectionProperties        connection properties.
     * @param connectionExceptionListener connection exception listener.

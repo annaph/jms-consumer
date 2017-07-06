@@ -5,14 +5,16 @@ import javax.jms.{Connection, Message, MessageConsumer, MessageListener}
 import io.reactivex.Flowable
 import io.reactivex.subscribers.TestSubscriber
 import org.apache.activemq.command.ActiveMQTextMessage
+import org.jms.consumer.TextConnectionProperties.{BROKER_URL, TOPIC_NAME}
 import org.junit.runner.RunWith
 import org.mockito.Matchers.any
-import org.mockito.Mockito.doNothing
+import org.mockito.Mockito.{doNothing, verify, when}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{FunSuite, Matchers}
 
 import scala.collection.JavaConverters._
+import scala.util.Try
 
 /**
   * Test suite for [[TextFlowable]] instances.
@@ -79,5 +81,34 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
 
       subscriber.assertNoValues()
     }
+  }
+
+  test("Try to connect with missing connection properties") {
+    val connectionProperties = mock[ConnectionProperties]
+    when(connectionProperties.properties())
+      .thenReturn(Map[String, String]())
+
+    val msgFlowable = new TextFlowable(connectionProperties, null)
+
+    val actual: Try[(Connection, MessageConsumer)] = msgFlowable.connect()
+
+    actual.isFailure should be(true)
+    actual.toEither.left.get.getMessage should be("Missing connection properties")
+    verify(connectionProperties).properties()
+  }
+
+  test("Handle failure while establishing connection") {
+    val connectionProperties = mock[ConnectionProperties]
+    when(connectionProperties.properties())
+      .thenReturn(Map(
+        BROKER_URL -> "broker-url",
+        TOPIC_NAME -> "topic-name"))
+
+    val msgFlowable = new TextFlowable(connectionProperties, null)
+
+    val actual: Try[(Connection, MessageConsumer)] = msgFlowable.connect()
+
+    actual.isFailure should be(true)
+    actual.toEither.left.get.getMessage should include("Transport not scheme specified: [broker-url]")
   }
 }
