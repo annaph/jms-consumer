@@ -13,6 +13,7 @@ import javax.jms.{Message, TextMessage}
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 
+import scala.util.{Failure, Success, Try}
 import scalaz.effect.IO
 
 /**
@@ -58,17 +59,18 @@ class TextSubscriber(
   override def subscribe(): Disposable = {
     val onNext: Consumer[Message] =
       msg => {
-        val text = converter fromMessage msg.asInstanceOf[TextMessage]
-        val action: IO[Unit] = processor process text
+        Try {
+          val text = converter fromMessage msg.asInstanceOf[TextMessage]
+          val action: IO[Unit] = processor process text
 
-        action.unsafePerformIO()
+          action.unsafePerformIO()
+        } match {
+          case Success(_) =>
+          case Failure(e) =>
+            e.printStackTrace()
+        }
       }
 
-    val onError: Consumer[Throwable] =
-      e => {
-        e.printStackTrace()
-      }
-
-    flowable.messageFlowable().subscribe(onNext, onError)
+    flowable.messageFlowable().subscribe(onNext)
   }
 }

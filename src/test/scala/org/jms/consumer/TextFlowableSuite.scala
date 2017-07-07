@@ -58,31 +58,6 @@ class TextFlowableSuite extends FunSuite with Matchers with MockitoSugar {
     }
   }
 
-  test("Prepare for emitting - handle failure") {
-    new TestFixture {
-      doNothing().when(mockConnection)
-        .start()
-      doNothing().when(mockMessageConsumer)
-        .setMessageListener(any(classOf[MessageListener]))
-
-      msgFlowable prepare(mockConnection, mockMessageConsumer)
-
-      val subscriber = new TestSubscriber[Message]() {
-        override def onNext(msg: Message): Unit = {
-          throw new Exception()
-        }
-      }
-      val flowable: Flowable[Message] = msgFlowable.messageFlowable()
-
-      flowable subscribe subscriber
-      val messageListener: MessageListener = msgFlowable.messageListener
-
-      messageListener onMessage jmsMsg1
-
-      subscriber.assertNoValues()
-    }
-  }
-
   test("Try to connect with missing connection properties") {
     val connectionProperties = mock[ConnectionProperties]
     when(connectionProperties.properties())

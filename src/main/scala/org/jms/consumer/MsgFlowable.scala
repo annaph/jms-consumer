@@ -101,14 +101,7 @@ class TextFlowable(
       subscriber =>
         val listener: MessageListener = {
           (msg: Message) =>
-            Try {
-              subscriber onNext msg
-            } match {
-              case Success(_) =>
-                ()
-              case Failure(e) =>
-                subscriber onError e
-            }
+            subscriber onNext msg
         }
 
         f.messageListener = listener
