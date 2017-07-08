@@ -29,6 +29,13 @@ libraryDependencies ++= Seq(
   "org.apache.activemq.tooling" % "activemq-junit" % "5.14.5" % "test",
   "org.awaitility" % "awaitility" % "3.0.0" % "test")
 
+scalacOptions in (Compile, doc) := Seq("-groups", "-implicits", "-no-link-warnings")
+scalacOptions in (Test, doc) := Seq("-groups", "-implicits")
+autoAPIMappings := true
+apiMappings += (
+  scalaInstance.value.libraryJar -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/"))
+apiURL := Some(url("http://consumer.jms.org/api/"))
+
 scalastyleConfig := file("jms_consumer-style-config.xml")
 scalastyleFailOnError := true
 
