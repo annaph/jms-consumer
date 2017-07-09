@@ -29,11 +29,17 @@ libraryDependencies ++= Seq(
   "org.apache.activemq.tooling" % "activemq-junit" % "5.14.5" % "test",
   "org.awaitility" % "awaitility" % "3.0.0" % "test")
 
-scalacOptions in (Compile, doc) := Seq("-groups", "-implicits", "-no-link-warnings")
-scalacOptions in (Test, doc) := Seq("-groups", "-implicits")
-autoAPIMappings := true
+scalacOptions in (Compile, doc) := Seq(
+  "-groups",
+  "-implicits",
+  "-no-link-warnings")
+scalacOptions in (Test, doc) := Seq(
+  "-groups",
+  "-implicits",
+  "-no-link-warnings")
 apiMappings += (
   scalaInstance.value.libraryJar -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/"))
+autoAPIMappings := true
 apiURL := Some(url("http://consumer.jms.org/api/"))
 
 scalastyleConfig := file("jms_consumer-style-config.xml")
@@ -52,3 +58,5 @@ jacoco.thresholds in jacoco.Config := de.johoop.jacoco4sbt.Thresholds(
   complexity = 51.00,
   line = 95.0,
   clazz = 95.0)
+
+mappings in (Compile, packageDoc) := Seq()
