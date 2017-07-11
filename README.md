@@ -34,3 +34,6 @@ Got to _jms-consumer-1.0.0/bin_ folder and run:
 ```sh
 $ ./jms-consumer
 ```
+
+### License
+Free software.
